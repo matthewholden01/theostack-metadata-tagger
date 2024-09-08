@@ -2,9 +2,16 @@ import os
 import time
 
 from unstructured.partition.pdf import partition_pdf
+from unstructured.partition.epub import partition_epub
 from langchain_core.documents import Document
 from utils import loadData, rename_file, storeData
 
+
+def partition_document_type(filepath, extension):
+    if extension == "pdf":
+        return partition_pdf(filepath, include_page_breaks=False, languages=["en"], strategy="auto", max_partition=None)
+    elif extension == "epub":
+        return partition_epub(filepath, include_page_breaks=False)
 
 def process_document(filepath):
     origin_filename = filepath.split("/")[-1]
@@ -16,12 +23,9 @@ def process_document(filepath):
     except FileNotFoundError:
         print("Processing {0}".format(origin_filename))
         start = time.time()
-        elements = partition_pdf(
+        elements = partition_document_type(
             filepath,
-            include_page_breaks=False,
-            languages=["en"],
-            strategy="auto",
-            max_partition=None,
+            origin_filename.split(".")[-1].lower()
         )
         storeData(processed_filepath, elements)
         end = time.time()
@@ -57,13 +61,13 @@ def process_directory(dir_path):
         print("Progress: " + str(i) + " of " + str(len(os.listdir(dir_path))))
         filename = os.fsdecode(file)
 
-        if filename.endswith(".pdf"):
-            filepath = os.path.join(dir_path, filename)
-            process_file(filepath)
+        filepath = os.path.join(dir_path, filename)
+        process_file(filepath)
         i += 1
+        print(filename)
     end = time.time()
     print("Finished Processing {0} files in {1} seconds".format(str(len(os.listdir(dir_path))), str(end - start))) 
 
-dir_path = "/Users/holdem3/Documents/TheoStack/Docs/The Blood of the Covenant.pdf"
+dir_path = "/Users/holdem3/Documents/TheoStack/Docs/"
 
 start(dir_path)
