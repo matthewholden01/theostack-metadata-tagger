@@ -1,0 +1,6 @@
+Error processing document: /Users/holdem3/Documents/TheoStack/Docs/The Blood of the Covenant.pdf
+Unable to get page count.
+Syntax Error: Couldn't find trailer dictionary
+Syntax Error: Couldn't find trailer dictionary
+Syntax Error: Couldn't read xref table
+

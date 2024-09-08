@@ -5,7 +5,6 @@ import pickle
 import re
 import numbers
 
-from accelerate import Accelerator
 from transformers import pipeline
 
 from langchain_community.document_transformers.openai_functions import (create_metadata_tagger)
